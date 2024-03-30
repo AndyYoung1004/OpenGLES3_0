@@ -9,12 +9,25 @@ import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 public class GLUtils {
     private Context mContext;
 
     public GLUtils(Context context) {
         mContext = context;
+    }
+
+    //调整坐标
+    public float[] adjustCoord(float[] coords, int width, int height) {
+        float ratio = width > height ? (1.0f * height / width) : (1.0f * width / height);
+        int start = width > height ? 0 : 1;
+        float[] tempCoord =  Arrays.copyOf(coords, coords.length);
+        int num = tempCoord.length / 3;
+        for (int i = 0; i < num; i++) {
+            tempCoord[start + i * 3] *= ratio;
+        }
+        return tempCoord;
     }
 
     public FloatBuffer getFloatBuffer(float[] floatArr) {
@@ -70,4 +83,3 @@ public class GLUtils {
         return sb.toString();
     }
 }
-

@@ -6,14 +6,14 @@ import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
-import com.example.opengles3.utils.*;
+import com.example.opengles3.utils.GLUtils;
 
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class TriangleActivity extends Activity {
+public class SquareActivity extends Activity {
     private GLSurfaceView mGlSurfaceView;
 
     @Override
@@ -42,7 +42,6 @@ public class TriangleActivity extends Activity {
 
         public MyRender(Context context) {
             mGLUtils = new GLUtils(context);
-            getFloatBuffer();
         }
 
         @Override
@@ -50,8 +49,8 @@ public class TriangleActivity extends Activity {
             //设置背景颜色
             GLES30.glClearColor(0.1f, 0.2f, 0.3f, 0.4f);
             //编译着色器
-            final int vertexShaderId = mGLUtils.compileShader(GLES30.GL_VERTEX_SHADER, R.raw.triangle_vertex_shader);
-            final int fragmentShaderId = mGLUtils.compileShader(GLES30.GL_FRAGMENT_SHADER, R.raw.triangle_fragment_shader);
+            final int vertexShaderId = mGLUtils.compileShader(GLES30.GL_VERTEX_SHADER, R.raw.square_vertex_shader);
+            final int fragmentShaderId = mGLUtils.compileShader(GLES30.GL_FRAGMENT_SHADER, R.raw.square_fragment_shader);
             //链接程序片段
             int programId = mGLUtils.linkProgram(vertexShaderId, fragmentShaderId);
             GLES30.glUseProgram(programId);
@@ -61,6 +60,7 @@ public class TriangleActivity extends Activity {
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             //设置视图窗口
             GLES30.glViewport(0, 0, width, height);
+            getFloatBuffer(width, height);
         }
 
         @Override
@@ -72,20 +72,22 @@ public class TriangleActivity extends Activity {
             GLES30.glEnableVertexAttribArray(0);
             //准备坐标数据
             GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
-//        GLES30.glDrawArrays(GLES30.GL_POINTS, 0, 3); //绘制三角形的三个顶点
-//        GLES30.glDrawArrays(GLES30.GL_LINE_LOOP, 0, 3); //绘制三角形的三条边
-            GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3); //绘制三角形的内部
+//        GLES30.glDrawArrays(GLES30.GL_POINTS, 0, 4); //绘制正方形的四个顶点
+//        GLES30.glDrawArrays(GLES30.GL_LINE_LOOP, 0, 4); //绘制正方形的四条边
+            GLES30.glDrawArrays(GLES30.GL_TRIANGLE_FAN, 0, 4); //绘制正方形的内部
             //禁止顶点数组句柄
             GLES30.glDisableVertexAttribArray(0);
         }
 
-        private void getFloatBuffer() {
+        private void getFloatBuffer(int width, int height) {
             float[] vertex = new float[] {
-                    0.0f, 0.5f, 0.0f,
+                    0.5f, 0.5f, 0.0f,
+                    -0.5f, 0.5f, 0.0f,
                     -0.5f, -0.5f, 0.0f,
                     0.5f, -0.5f, 0.0f
             };
-            vertexBuffer = mGLUtils.getFloatBuffer(vertex);
+            float[] tempVertex = mGLUtils.adjustCoord(vertex, width, height);
+            vertexBuffer = mGLUtils.getFloatBuffer(tempVertex);
         }
     }
 }

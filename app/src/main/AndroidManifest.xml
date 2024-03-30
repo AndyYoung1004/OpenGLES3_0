@@ -28,6 +28,8 @@
         </activity>
         <activity android:name=".TriangleActivity"/>
         <activity android:name=".PureColorActivity"/>
+        <activity android:name=".ColorTriangle"/>
+        <activity android:name=".SquareActivity"/>
     </application>
 
 </manifest>

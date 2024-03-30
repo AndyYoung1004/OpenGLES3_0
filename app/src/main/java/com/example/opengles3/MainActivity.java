@@ -20,6 +20,8 @@ import java.util.List;
 public class MainActivity extends ListActivity {
     private final int PURECOLOR_ACTIVITY = 0;
     private final int TRIANGLE_ACTIVITY = 1;
+    private final int COLOR_TRIANGLE_ACTIVITY = 2;
+    private final int SQUARE_ACTIVITY = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class MainActivity extends ListActivity {
         List<String> displayList = new ArrayList<>();
         displayList.add("纯色");
         displayList.add("三角形");
+        displayList.add("彩色三角形");
+        displayList.add("四边形");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, displayList);
         setListAdapter(adapter);
@@ -43,6 +47,14 @@ public class MainActivity extends ListActivity {
         } else if (position == TRIANGLE_ACTIVITY) {
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, TriangleActivity.class);
+            startActivity(intent);
+        } else if (position == COLOR_TRIANGLE_ACTIVITY) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, ColorTriangle.class);
+            startActivity(intent);
+        } else if (position == SQUARE_ACTIVITY) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, SquareActivity.class);
             startActivity(intent);
         }
     }
