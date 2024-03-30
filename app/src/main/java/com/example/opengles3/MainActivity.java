@@ -18,12 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ListActivity {
-    private final int TRIANGLE_ACTIVITY = 0;
+    private final int PURECOLOR_ACTIVITY = 0;
+    private final int TRIANGLE_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         List<String> displayList = new ArrayList<>();
+        displayList.add("纯色");
         displayList.add("三角形");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, displayList);
@@ -34,7 +36,11 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        if (position == TRIANGLE_ACTIVITY) {
+        if (position == PURECOLOR_ACTIVITY) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, PureColorActivity.class);
+            startActivity(intent);
+        } else if (position == TRIANGLE_ACTIVITY) {
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, TriangleActivity.class);
             startActivity(intent);
