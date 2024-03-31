@@ -22,6 +22,8 @@ public class MainActivity extends ListActivity {
     private final int TRIANGLE_ACTIVITY = 1;
     private final int COLOR_TRIANGLE_ACTIVITY = 2;
     private final int SQUARE_ACTIVITY = 3;
+    private final int ROUND_ACTIVITY = 4;
+    private final int CUBE_ACTIVITY = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,8 @@ public class MainActivity extends ListActivity {
         displayList.add("三角形");
         displayList.add("彩色三角形");
         displayList.add("四边形");
+        displayList.add("圆形");
+        displayList.add("立方体");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, displayList);
         setListAdapter(adapter);
@@ -55,6 +59,14 @@ public class MainActivity extends ListActivity {
         } else if (position == SQUARE_ACTIVITY) {
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, SquareActivity.class);
+            startActivity(intent);
+        } else if (position == ROUND_ACTIVITY) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, RoundActivity.class);
+            startActivity(intent);
+        } else if (position == CUBE_ACTIVITY) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, CubeActivity.class);
             startActivity(intent);
         }
     }
