@@ -33,6 +33,7 @@
         <activity android:name=".RoundActivity"/>
         <activity android:name=".CubeActivity"/>
         <activity android:name=".TextureActivity"/>
+        <activity android:name=".SixCubeActivity"/>
     </application>
 
 </manifest>

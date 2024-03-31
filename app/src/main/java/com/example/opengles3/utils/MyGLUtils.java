@@ -16,7 +16,7 @@ import java.nio.FloatBuffer;
 public class MyGLUtils {
     private Context mContext;
     private Bitmap mBitmap;
-
+    private int mRotateAgree = 0;
     public MyGLUtils(Context context) {
         mContext = context;
     }
@@ -72,6 +72,58 @@ public class MyGLUtils {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    //计算MVP变换矩阵
+    public void transform(int programId, float ratio) {
+        //初始化modelMatrix, viewMatrix, projectionMatrix
+        float[] modelMatrix = getIdentityMatrix(16, 0); //模型变换矩阵
+        float[] viewMatrix = getIdentityMatrix(16, 0); //观测变换矩阵
+        float[] projectionMatrix = getIdentityMatrix(16, 0); //投影变换矩阵
+        //获取modelMatrix, viewMatrix, projectionMatrix
+        mRotateAgree = (mRotateAgree + 2) % 360;
+        Matrix.rotateM(modelMatrix, 0, mRotateAgree, -1, -1, 1); //获取模型旋转变换矩阵
+        Matrix.setLookAtM(viewMatrix, 0, 0, 5, 10, 0, 0, 0, 0, 1, 0); //获取观测变换矩阵
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 3, 20); //获取投影变换矩阵
+        //计算MVP变换矩阵: mvpMatrix = projectionMatrix * viewMatrix * modelMatrix
+        float[] tempMatrix = new float[16];
+        float[] mvpMatrix = new float[16];
+        Matrix.multiplyMM(tempMatrix, 0, viewMatrix, 0, modelMatrix, 0);
+        Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, tempMatrix, 0);
+        //设置MVP变换矩阵
+        int mvpMatrixHandle = GLES30.glGetUniformLocation(programId, "mvpMatrix");
+        GLES30.glUniformMatrix4fv(mvpMatrixHandle, 1, false, mvpMatrix, 0);
+    }
+
+    private float[] getIdentityMatrix(int size, int offset) {
+        float[] matrix = new float[size];
+        Matrix.setIdentityM(matrix, offset);
+        return matrix;
+    }
+
+    //加载纹理贴图
+    public int[] loadTexture(int[] resIds) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        Bitmap[] bitmaps = new Bitmap[resIds.length];
+        // 生成纹理id
+        final int[] textureIds = new int[resIds.length];
+        GLES30.glGenTextures(resIds.length, textureIds, 0);
+        for (int i = 0; i < resIds.length; i++) {
+            bitmaps[i] = BitmapFactory.decodeResource(mContext.getResources(), resIds[i], options);
+            // 绑定纹理到OpenGL
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIds[i]);
+            GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR_MIPMAP_LINEAR);
+            GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+            // 加载bitmap到纹理中
+            GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmaps[i], 0);
+            // 生成MIP贴图
+            GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
+            // 取消绑定纹理
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+            bitmaps[i].recycle();
+        }
+        return textureIds;
     }
 
     //加载纹理贴图
