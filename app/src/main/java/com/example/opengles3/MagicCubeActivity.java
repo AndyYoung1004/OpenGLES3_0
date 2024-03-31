@@ -6,7 +6,6 @@ import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
-import com.example.opengles3.utils.GLUtils;
 import com.example.opengles3.utils.MyGLUtils;
 
 import java.nio.FloatBuffer;
@@ -14,7 +13,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class SixCubeActivity extends Activity {
+public class MagicCubeActivity extends Activity {
     private GLSurfaceView mGlSurfaceView;
 
     @Override
@@ -112,4 +111,5 @@ public class SixCubeActivity extends Activity {
             }
         }
     }
+
 }
