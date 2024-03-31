@@ -24,6 +24,7 @@ public class MainActivity extends ListActivity {
     private final int SQUARE_ACTIVITY = 3;
     private final int ROUND_ACTIVITY = 4;
     private final int CUBE_ACTIVITY = 5;
+    private final int TEXTURE_ACTIVITY = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class MainActivity extends ListActivity {
         displayList.add("四边形");
         displayList.add("圆形");
         displayList.add("立方体");
+        displayList.add("纹理");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, displayList);
         setListAdapter(adapter);
@@ -67,6 +69,10 @@ public class MainActivity extends ListActivity {
         } else if (position == CUBE_ACTIVITY) {
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, CubeActivity.class);
+            startActivity(intent);
+        } else if (position == TEXTURE_ACTIVITY) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, TextureActivity.class);
             startActivity(intent);
         }
     }

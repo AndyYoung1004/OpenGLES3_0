@@ -32,6 +32,7 @@
         <activity android:name=".SquareActivity"/>
         <activity android:name=".RoundActivity"/>
         <activity android:name=".CubeActivity"/>
+        <activity android:name=".TextureActivity"/>
     </application>
 
 </manifest>
